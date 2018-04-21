@@ -1,4 +1,4 @@
-var url = 'http://ws.audioscrobbler.com/2.0/'
+var url = 'https://ws.audioscrobbler.com/2.0/'
 
 var tokenParam = new URLSearchParams(window.location.search);
 var token = tokenParam.toString();
