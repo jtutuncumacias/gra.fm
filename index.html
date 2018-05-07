@@ -1,11 +1,66 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<style type="text/css" src="./css/style.css"></style>
+	<script type="text/javascript" src="http://visjs.org/dist/vis.js"></script>
+	<link href="http://visjs.org/dist/vis-network.min.css" rel="stylesheet" type="text/css"/>
+	<style type="text/css">
+    body {
+    	font: 10pt arial;
+    }
+    #mynetwork {
+    	margin: auto;
+		width: 75%;
+		height: 95%;
+		border: 1px solid lightgray;
+    }
+    #loader {
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	  z-index: 1;
+	  width: 150px;
+	  height: 150px;
+	  margin: -75px 0 0 -75px;
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 120px;
+	  height: 120px;
+	  -webkit-animation: spin 2s linear infinite;
+	  animation: spin 2s linear infinite;
+	}
+
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	</style>
 	<title>gra.fm</title>
 </head>
 <body>
-	<button id="login">Login</button>
-	<script type="text/javascript" src="./js/auth.js"></script>
+	<div>
+		<input type="text" placeholder="Username" id="username" required/>
+		<select id="depth">
+			<option selected disabled>Depth:</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+		<button type="button" id="getGraph">Generate</button>
+	</div>
+	<br>
+	<div id="loader-wrapper">
+		<div style="display:none;"  id="loader"></div>
+	</div>
+	<div id="network-wrapper">
+		<div id="mynetwork"></div>
+	</div>
+	<script type="text/javascript" src="./js/queue.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
