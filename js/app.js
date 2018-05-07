@@ -25,7 +25,6 @@ function getHead(user, depth) {
 		this.nodes.push({id:head.key, margin:(20*depth), mass:(10 * depth), value:(20*(depth+1)), shape: 'circularImage', label: head.name, image: head.image[2]["#text"], brokenImage:"https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png"});
 		this.queue.enqueue({user:head.name,key:this.count,depth:parseInt(depth)});
 		this.count++;
-		return JSON.stringify(json);
 	});
 }
 
@@ -39,7 +38,6 @@ async function getGraph(user, depth) {
 
 	while(!this.queue.isEmpty()) {
 		var obj = queue.dequeue();
-		console.log(obj);
 		await getGraphHelper(obj.user, obj.key, obj.depth);
 	}
 	await getNetwork(this.nodes, this.edges);
@@ -58,22 +56,20 @@ async function getGraphHelper(user, key, depth) {
 }
 
 async function getNetwork(nodes, edges) {
-  var container = document.getElementById('mynetwork');
-  var data = {
-    nodes: this.nodes,
-    edges: this.edges
-  };
-  var options = {
-  	edges:{smooth:{type:'continuous'}},
-  };
-  var network = new vis.Network(container, data, options);
-  
+	var container = document.getElementById('mynetwork');
+	var data = {
+		nodes: this.nodes,
+		edges: this.edges
+	};
+	var options = {
+		edges:{smooth:{type:'continuous'}},
+	};
+	var network = new vis.Network(container, data, options);
 	document.getElementById("loader").style.display = "none";
 	document.getElementById("mynetwork").style.display = "block";
 }
 
 function getFriends(user, key, depth) {
-	//console.log(user + ", " + key + ", " + depth);
 	var friend_url = url + "?method=user.getfriends&user=" + user + api_key + "&format=json"
 	return fetch(friend_url).then(function(data){ return data.json() })
 	.then(function(json){
@@ -99,7 +95,6 @@ function getFriends(user, key, depth) {
 				}
 				this.count++;
 			}
-			console.log(friendList);
 			return friendList;
 		}
 	});
