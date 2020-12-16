@@ -1,6 +1,7 @@
 var url = 'https://ws.audioscrobbler.com/2.0/'
 var api_key = '&api_key=cf750ccfe46454e1247540a136b2f2f4'
 var reqBtn = document.getElementById('getGraph');
+var avatarURL = "img/avatar.jpg";
 
 reqBtn.addEventListener('click', function () {
 	document.getElementById("loader").style.display = "block";
@@ -21,8 +22,8 @@ function getHead(user, depth) {
 		var head = json.user;
 		head.key = this.count;
 		this.obj[head.name] = head;
-		var img = (head.image[1]["#text"] != "") ? (head.image[1]["#text"]) : "https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png";
-		this.nodes.push({id:head.key, margin:(20*depth), mass:(10 * depth), value:(20*(depth+1)), shape: 'circularImage', label: head.name, image: head.image[2]["#text"], brokenImage:"https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png"});
+		var img = (head.image[1]["#text"] != "") ? (head.image[1]["#text"]) : avatarURL;
+		this.nodes.push({id:head.key, margin:(20*depth), mass:(10 * depth), value:(20*(depth+1)), shape: 'circularImage', label: head.name, image: head.image[2]["#text"], brokenImage:avatarURL});
 		this.queue.enqueue({user:head.name,key:this.count,depth:parseInt(depth)});
 		this.count++;
 	});
@@ -75,6 +76,7 @@ function getFriends(user, key, depth) {
 	.then(function(json){
 		if ("{}" != JSON.stringify(json)) {
 			var friendList = {};
+			if (json.error != null) return friendList;
 			var bound =  Math.min(20,Math.min(json.friends["@attr"].total,json.friends["@attr"].perPage)); 
 			for (var i = 0; i < bound; i++) {
 				var friend = json.friends.user[i];
@@ -83,11 +85,11 @@ function getFriends(user, key, depth) {
 				if (!(username in this.obj)) {
 					friendList[username] = friend;
 					this.obj[username] = friend;
-					var img = (friend.image[2]["#text"] != "") ? (friend.image[2]["#text"]) : "https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png";
+					var img = (friend.image[2]["#text"] != "") ? (friend.image[2]["#text"]) : avatarURL;
 					if (depth <= 1) {
-						this.nodes.push({id:friend.key, cid:((depth == 0) ? friend.key : key), margin:(20*depth), value:(Math.max(1,(20*(depth+1)))), shape: 'circularImage', label: username, image: img, brokenImage:"https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png"});	
+						this.nodes.push({id:friend.key, cid:((depth == 0) ? friend.key : key), margin:(20*depth), value:(Math.max(1,(20*(depth+1)))), shape: 'circularImage', label: username, image: img, brokenImage:avatarURL});	
 					} else {
-						this.nodes.push({id:friend.key, margin:(20*depth), value:(20*(depth+1)), mass:(10 * depth), shape: 'circularImage', label: username, image: img, brokenImage:"https://lastfm-img2.akamaized.net/i/u/avatar170s/818148bf682d429dc215c1705eb27b98.png"});
+						this.nodes.push({id:friend.key, margin:(20*depth), value:(20*(depth+1)), mass:(10 * depth), shape: 'circularImage', label: username, image: img, brokenImage:avatarURL});
 					}
 					this.edges.push({from:key, to:friend.key});
 				} else {
